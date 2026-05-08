@@ -6,82 +6,51 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-white mt-20">
+    <footer className="bg-gray-900 text-white py-10 mt-20">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-14 grid md:grid-cols-3 gap-10">
-
-        {/* LEFT */}
         <div>
-
-          <h1 className="text-3xl font-bold text-blue-400">
+          <h1 className="text-2xl font-bold text-blue-400">
             JobNova
           </h1>
 
-          <p className="text-slate-400 mt-4 leading-relaxed">
-            Find your dream job and connect with top companies
-            using our modern JobNova.
+          <p className="mt-4 text-gray-400">
+            Find jobs, connect with recruiters, and build your future with JobNova.
           </p>
-
         </div>
 
-        {/* CENTER */}
         <div>
-
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-lg font-semibold mb-4">
             Quick Links
           </h2>
 
-          <ul className="space-y-3 text-slate-400">
-
-            <li className="hover:text-white cursor-pointer">
-              Home
-            </li>
-
-            <li className="hover:text-white cursor-pointer">
-              Jobs
-            </li>
-
-            <li className="hover:text-white cursor-pointer">
-              Login
-            </li>
-
-            <li className="hover:text-white cursor-pointer">
-              Register
-            </li>
-
+          <ul className="space-y-2 text-gray-400">
+            <li>Home</li>
+            <li>Jobs</li>
+            <li>Login</li>
+            <li>Register</li>
           </ul>
-
         </div>
 
-        {/* RIGHT */}
         <div>
-
-          <h2 className="text-xl font-semibold mb-4">
-            Connect
+          <h2 className="text-lg font-semibold mb-4">
+            Contact
           </h2>
 
-          <div className="flex gap-5 text-2xl">
-
-            <FaGithub className="hover:text-blue-400 cursor-pointer" />
-
-            <FaLinkedin className="hover:text-blue-400 cursor-pointer" />
-
-            <FaInstagram className="hover:text-pink-400 cursor-pointer" />
-
-          </div>
-
-          <p className="text-slate-400 mt-5">
-            Chennai, India
+          <p className="text-gray-400">
+            support@jobnova.com
           </p>
 
+          <p className="text-gray-400 mt-2">
+            Chennai, India
+          </p>
         </div>
 
       </div>
 
-      <div className="border-t border-slate-800 text-center py-5 text-slate-500">
+      <div className="text-center text-gray-500 mt-10">
         © 2026 JobNova. All rights reserved.
       </div>
-
     </footer>
   );
 }
