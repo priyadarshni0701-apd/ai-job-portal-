@@ -73,7 +73,7 @@ export default function JobList() {
               <div className="flex items-center justify-between mt-4">
                 <span className="text-sm text-slate-400">
                   {job.salary_min && job.salary_max
-                    ? `$${Number(job.salary_min).toLocaleString()} – $${Number(job.salary_max).toLocaleString()}`
+                    ? `₹${Number(job.salary_min).toLocaleString()} – ₹${Number(job.salary_max).toLocaleString()}`
                     : "Salary not specified"}
                 </span>
                 <Link
