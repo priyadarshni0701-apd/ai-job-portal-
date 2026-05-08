@@ -44,7 +44,7 @@ export default function Home() {
 
               Discover top companies, apply instantly,
               and build your future with our modern
-              AI-powered job platform.
+              JobNova platform.
 
             </p>
 
@@ -170,7 +170,7 @@ export default function Home() {
               </h3>
 
               <p className="text-slate-600 mt-4">
-                Build your future with AI-powered recommendations.
+                Build your future with JobNova recommendations.
               </p>
 
             </div>
