@@ -1,18 +1,16 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api",
   headers: { "Content-Type": "application/json" },
 });
 
-// Attach token to every request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Auto-refresh token on 401
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -22,7 +20,7 @@ api.interceptors.response.use(
       try {
         const refresh = localStorage.getItem("refresh");
         const { data } = await axios.post(
-          "http://127.0.0.1:8000/api/auth/token/refresh/",
+          `${import.meta.env.VITE_API_BASE_URL}/auth/token/refresh/`,
           { refresh }
         );
         localStorage.setItem("access", data.access);
