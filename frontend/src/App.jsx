@@ -41,7 +41,7 @@ export default function App() {
           } />
 
           {/* Default */}
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Home />} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>
