@@ -19,7 +19,7 @@ export default function Navbar() {
     <nav className="bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <Link to="/" className="text-xl font-bold text-blue-600">
-          AI Job Portal
+          JobNova
         </Link>
 
         {/* Desktop Menu */}
