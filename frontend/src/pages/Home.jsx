@@ -11,17 +11,15 @@ import {
 import Footer from "../components/Footer";
 
 export default function Home() {
-
   return (
-
     <div className="bg-slate-50 min-h-screen">
 
       {/* HERO SECTION */}
       <section className="bg-gradient-to-r from-blue-50 to-indigo-100 px-6 lg:px-20 py-20">
 
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
 
-          {/* LEFT */}
+          {/* LEFT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -32,7 +30,7 @@ export default function Home() {
               Trusted by 10,000+ users
             </span>
 
-            <h1 className="text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight mt-6">
+            <h1 className="text-4xl md:text-7xl font-bold leading-tight text-slate-900 mt-6">
 
               Find Your Dream Job With
 
@@ -42,16 +40,16 @@ export default function Home() {
 
             </h1>
 
-            <p className="text-slate-600 text-lg mt-6 leading-relaxed">
+            <p className="text-base md:text-xl text-slate-600 mt-6 leading-relaxed">
 
               Discover top companies, apply instantly,
               and build your future with our modern
-              JobNova platform.
+              AI-powered job platform.
 
             </p>
 
-            {/* SEARCH */}
-            <div className="bg-white mt-8 rounded-2xl shadow-lg flex overflow-hidden">
+            {/* SEARCH BAR */}
+            <div className="bg-white mt-8 rounded-2xl shadow-lg flex flex-col md:flex-row overflow-hidden w-full">
 
               <input
                 type="text"
@@ -59,25 +57,25 @@ export default function Home() {
                 className="w-full px-5 py-4 outline-none"
               />
 
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 transition duration-300">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 transition duration-300">
                 Search
               </button>
 
             </div>
 
             {/* BUTTONS */}
-            <div className="flex gap-4 mt-8 flex-wrap">
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
 
               <Link
                 to="/jobs"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition duration-300"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition duration-300 text-center"
               >
                 Browse Jobs
               </Link>
 
               <Link
                 to="/register"
-                className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-xl font-semibold transition duration-300"
+                className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-xl font-semibold transition duration-300 text-center"
               >
                 Get Started
               </Link>
@@ -86,7 +84,7 @@ export default function Home() {
 
           </motion.div>
 
-          {/* RIGHT */}
+          {/* RIGHT SIDE */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -96,7 +94,7 @@ export default function Home() {
             <img
               src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop"
               alt="hero"
-              className="rounded-3xl shadow-2xl"
+              className="w-full rounded-3xl shadow-2xl"
             />
 
           </motion.div>
@@ -105,12 +103,12 @@ export default function Home() {
 
       </section>
 
-      {/* FEATURES */}
+      {/* FEATURES SECTION */}
       <section className="px-6 lg:px-20 py-20">
 
         <div className="max-w-7xl mx-auto text-center">
 
-          <h2 className="text-4xl font-bold text-slate-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
             Why Choose JobNova?
           </h2>
 
@@ -118,7 +116,7 @@ export default function Home() {
             Everything you need to land your dream job.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14">
 
             {/* CARD 1 */}
             <div className="bg-white p-8 rounded-3xl shadow-md hover:shadow-2xl transition duration-300">
@@ -172,7 +170,7 @@ export default function Home() {
               </h3>
 
               <p className="text-slate-600 mt-4">
-                Build your future with JobNova recommendations.
+                Build your future with AI-powered recommendations.
               </p>
 
             </div>
@@ -183,16 +181,16 @@ export default function Home() {
 
       </section>
 
-      {/* CATEGORIES */}
+      {/* POPULAR CATEGORIES */}
       <section className="bg-white px-6 lg:px-20 py-20">
 
         <div className="max-w-7xl mx-auto text-center">
 
-          <h2 className="text-4xl font-bold text-slate-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
             Popular Categories
           </h2>
 
-          <div className="grid md:grid-cols-4 gap-6 mt-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-12">
 
             {[
               "Frontend Developer",
@@ -229,6 +227,5 @@ export default function Home() {
       <Footer />
 
     </div>
-
   );
 }
