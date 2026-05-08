@@ -27,7 +27,7 @@ export default function App() {
 
           {/* Protected - All roles */}
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/jobs" element={<PrivateRoute><JobList /></PrivateRoute>} />
+          <Route path="/jobs" element={<JobList />} />
           <Route path="/jobs/:id" element={<PrivateRoute><JobDetail /></PrivateRoute>} />
 
           {/* Protected - Seeker only */}
@@ -42,7 +42,7 @@ export default function App() {
 
           {/* Default */}
           <Route path="/" element={<Home />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
