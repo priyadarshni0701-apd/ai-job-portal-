@@ -11,6 +11,7 @@ export default function RecruiterDashboard() {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [appLoading, setAppLoading] = useState(false);
+  const [showApplicants, setShowApplicants] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -29,6 +30,7 @@ export default function RecruiterDashboard() {
   const viewApplications = async (job) => {
     setSelectedJob(job);
     setAppLoading(true);
+    setShowApplicants(true);
     try {
       const { data } = await api.get(`/jobs/${job.id}/applications/`);
       setApplications(data.results || data);
@@ -59,31 +61,43 @@ export default function RecruiterDashboard() {
     hired: "bg-green-100 text-green-600",
   };
 
-  if (loading) return <div className="text-center text-slate-400 py-20">Loading dashboard...</div>;
+  if (loading) return (
+    <div className="flex items-center justify-center py-20 text-slate-400 text-sm">
+      Loading dashboard...
+    </div>
+  );
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-5xl mx-auto px-4 py-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Recruiter Dashboard</h1>
-          <p className="text-slate-500">Welcome, {user?.full_name}</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">
+            Recruiter Dashboard
+          </h1>
+          <p className="text-sm text-slate-500">Welcome, {user?.full_name}</p>
         </div>
         <Link
           to="/post-job"
-          className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition text-center"
         >
           + Post New Job
         </Link>
       </div>
 
+      {/* Mobile: show either jobs list or applicants */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Posted Jobs */}
-        <div>
-          <h2 className="text-lg font-semibold text-slate-700 mb-4">📌 Posted Jobs ({jobs.length})</h2>
+
+        {/* Posted Jobs — always visible on desktop, toggle on mobile */}
+        <div className={showApplicants ? "hidden lg:block" : "block"}>
+          <h2 className="text-base sm:text-lg font-semibold text-slate-700 mb-4">
+            📌 Posted Jobs ({jobs.length})
+          </h2>
           {jobs.length === 0 ? (
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-sm text-slate-500">
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-500">
               No jobs posted yet.{" "}
-              <Link to="/post-job" className="text-blue-600 underline">Post your first job</Link>
+              <Link to="/post-job" className="text-blue-600 underline">
+                Post your first job
+              </Link>
             </div>
           ) : (
             <div className="space-y-3">
@@ -92,13 +106,20 @@ export default function RecruiterDashboard() {
                   key={job.id}
                   onClick={() => viewApplications(job)}
                   className={`bg-white rounded-xl border p-4 cursor-pointer hover:shadow-md transition ${
-                    selectedJob?.id === job.id ? "border-blue-400 ring-1 ring-blue-300" : "border-slate-200"
+                    selectedJob?.id === job.id
+                      ? "border-blue-400 ring-1 ring-blue-300"
+                      : "border-slate-200"
                   }`}
                 >
                   <h3 className="font-semibold text-slate-800">{job.title}</h3>
-                  <p className="text-sm text-slate-500">{job.company} · {job.location}</p>
+                  <p className="text-sm text-slate-500">
+                    {job.company} · {job.location}
+                  </p>
                   <p className="text-xs text-slate-400 mt-1">
                     Posted: {new Date(job.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-blue-500 mt-1 lg:hidden">
+                    Tap to view applicants →
                   </p>
                 </div>
               ))}
@@ -106,34 +127,53 @@ export default function RecruiterDashboard() {
           )}
         </div>
 
-        {/* Applications Panel */}
-        <div>
-          <h2 className="text-lg font-semibold text-slate-700 mb-4">
-            👥 {selectedJob ? `Applicants for "${selectedJob.title}"` : "Select a job to view applicants"}
-          </h2>
+        {/* Applicants Panel */}
+        <div className={!showApplicants ? "hidden lg:block" : "block"}>
+          <div className="flex items-center gap-2 mb-4">
+            {/* Back button on mobile */}
+            {showApplicants && (
+              <button
+                onClick={() => setShowApplicants(false)}
+                className="lg:hidden text-sm text-blue-600 hover:underline"
+              >
+                ← Back
+              </button>
+            )}
+            <h2 className="text-base sm:text-lg font-semibold text-slate-700">
+              👥 {selectedJob ? `"${selectedJob.title}" Applicants` : "Select a job"}
+            </h2>
+          </div>
+
           {!selectedJob ? (
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-sm text-slate-400">
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-400">
               Click on a job to see its applications.
             </div>
           ) : appLoading ? (
             <div className="text-slate-400 text-sm py-4">Loading...</div>
           ) : applications.length === 0 ? (
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-sm text-slate-500">
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-500">
               No applications yet for this job.
             </div>
           ) : (
             <div className="space-y-3">
               {applications.map((app) => (
-                <div key={app.id} className="bg-white rounded-xl border border-slate-200 p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-medium text-slate-800">{app.applicant_name}</p>
-                      <p className="text-xs text-slate-500">{app.applicant_email}</p>
+                <div
+                  key={app.id}
+                  className="bg-white rounded-xl border border-slate-200 p-4"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-medium text-slate-800 truncate">
+                        {app.applicant_name}
+                      </p>
+                      <p className="text-xs text-slate-500 truncate">
+                        {app.applicant_email}
+                      </p>
                       <p className="text-xs text-blue-600 mt-0.5 font-medium">
                         Match: {app.match_percentage}%
                       </p>
                     </div>
-                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${statusColor[app.status]}`}>
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize shrink-0 ${statusColor[app.status]}`}>
                       {app.status}
                     </span>
                   </div>
@@ -146,7 +186,7 @@ export default function RecruiterDashboard() {
                     <select
                       value={app.status}
                       onChange={(e) => updateStatus(app.id, e.target.value)}
-                      className="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                      className="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-400 w-full sm:w-auto"
                     >
                       {["applied", "reviewing", "shortlisted", "rejected", "hired"].map((s) => (
                         <option key={s} value={s}>{s}</option>
