@@ -11,7 +11,7 @@ export default function JobList() {
   const fetchJobs = async (q = "") => {
     setLoading(true);
     try {
-      const { data } = await api.get(`/jobs/${q ? `?search=${q}` : ""}`);
+      const { data } = await api.get(`/jobs${q ? `?search=${q}` : ""}`);
       setJobs(data.results || data);
     } catch {
       toast.error("Failed to load jobs");
