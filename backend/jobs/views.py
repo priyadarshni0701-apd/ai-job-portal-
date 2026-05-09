@@ -38,7 +38,7 @@ class JobListCreateView(generics.ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "POST":
             return [IsRecruiter()]
-        return [IsAuthenticated()]
+        return []
 
 
 class JobDetailView(generics.RetrieveUpdateDestroyAPIView):
