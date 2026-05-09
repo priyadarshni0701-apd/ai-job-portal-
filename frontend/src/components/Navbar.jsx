@@ -18,8 +18,9 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <Link to="/" className="text-xl font-bold text-blue-600">
-          JobNova
+        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600">
+        <img src="/logo.png" alt="logo" className="w-10 h-10 object-contain" />
+        <span>JobNova</span>
         </Link>
 
         {/* Desktop Menu */}
