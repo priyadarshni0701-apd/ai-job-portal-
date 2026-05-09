@@ -19,7 +19,7 @@ export default function Navbar() {
     <nav className="bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600">
-        <img src="/logo.png" alt="logo" className="w-10 h-10 object-contain" />
+        <img src={logo}  alt="logo" className="w-10 h-10 object-contain" />
         <span>JobNova</span>
         </Link>
 
