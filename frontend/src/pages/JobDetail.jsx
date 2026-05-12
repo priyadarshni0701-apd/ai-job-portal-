@@ -79,7 +79,7 @@ export default function JobDetail() {
                     <span className="badge badge-orange capitalize">{job.experience_level}</span>
                     {job.salary_min && (
                       <span className="badge badge-green">
-                        ${Number(job.salary_min).toLocaleString()} – ${Number(job.salary_max).toLocaleString()}
+                        ₹{job.salary_min} LPA - ₹{job.salary_max} LPA
                       </span>
                     )}
                   </div>
