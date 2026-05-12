@@ -2,177 +2,197 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
-import logo from "../assets/logo.png";
 
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    full_name: "", email: "", role: "seeker", password: "", password2: "",
-  });
+  const [form, setForm] = useState({ full_name: "", email: "", role: "seeker", password: "", password2: "" });
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.password2) {
-      toast.error("Passwords do not match");
-      return;
-    }
+    if (form.password !== form.password2) { toast.error("Passwords do not match"); return; }
     setLoading(true);
     try {
       await register(form);
-      toast.success("Account created!");
+      toast.success("Account created! Welcome to HireAI 🎉");
       navigate("/dashboard");
     } catch (err) {
       const errors = err.response?.data;
-      if (errors) {
-        Object.values(errors).forEach((msg) => toast.error(Array.isArray(msg) ? msg[0] : msg));
-      } else {
-        toast.error("Registration failed");
-      }
+      if (errors) Object.values(errors).forEach((m) => toast.error(Array.isArray(m) ? m[0] : m));
+      else toast.error("Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
- return (
+  return (
     <div className="min-h-screen flex">
-
-      {/* LEFT SIDE */}
-      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-600 to-purple-600 text-white flex-col justify-center items-center p-10">
-        <h1 className="text-4xl font-bold mb-4">JobNova 🚀</h1>
-        <p className="text-lg text-center max-w-md">
-          Build your career with JobNova and explore amazing opportunities.
-        </p>
+      {/* Left Panel */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-500 to-orange-700 text-white flex-col justify-between p-12 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-white blur-3xl" />
+          <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-blue-400 blur-3xl" />
+        </div>
+        <Link to="/" className="flex items-center gap-2 relative z-10">
+          <div className="w-9 h-9 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+              <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"/>
+            </svg>
+          </div>
+          <span className="text-2xl font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>HireAI</span>
+        </Link>
+        <div className="relative z-10">
+          <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
+            Start Your<br />Journey 🚀
+          </h2>
+          <p className="text-orange-100 text-lg mb-8">
+            Join millions of professionals finding jobs with AI.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { v: "50K+", l: "Active Jobs" },
+              { v: "2M+", l: "Job Seekers" },
+              { v: "80K+", l: "Companies" },
+              { v: "95%", l: "Match Rate" },
+            ].map((s, i) => (
+              <div key={i} className="bg-white/15 border border-white/20 rounded-xl p-4 text-center">
+                <div className="text-2xl font-extrabold" style={{ fontFamily: 'Sora, sans-serif' }}>{s.v}</div>
+                <div className="text-orange-200 text-xs mt-1">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="text-orange-300 text-sm relative z-10">© 2024 HireAI. All rights reserved.</p>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-50">
-        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+      {/* Right Panel */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-slate-50 overflow-y-auto">
+        <div className="w-full max-w-md py-8 animate-fadeInUp">
+          <div className="card p-8">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-slate-800 mb-1" style={{ fontFamily: 'Sora, sans-serif' }}>
+                Create your account
+              </h1>
+              <p className="text-sm text-slate-500">
+                Already have an account?{" "}
+                <Link to="/login" className="text-blue-600 font-medium hover:underline">Sign in →</Link>
+              </p>
+            </div>
 
-          {/* LOGO + TITLE */}
-          <div className="flex items-center gap-3 mb-4">
-            <img src={logo} alt="logo" className="w-10 h-10" />
-            <span className="text-xl font-bold text-blue-600">JobNova</span>
+            {/* Role Toggle */}
+            <div className="flex rounded-xl bg-slate-100 p-1 mb-6">
+              {["seeker", "recruiter"].map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => setForm({ ...form, role: r })}
+                  className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
+                    form.role === r
+                      ? "bg-white text-blue-600 shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  {r === "seeker" ? "🔍 Job Seeker" : "🏢 Recruiter"}
+                </button>
+              ))}
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </span>
+                  <input type="text" required value={form.full_name}
+                    onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+                    className="input-field pl-10" placeholder="John Doe"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                  </span>
+                  <input type="email" required value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="input-field pl-10" placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                  </span>
+                  <input type={showPass ? "text" : "password"} required value={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    className="input-field pl-10 pr-10" placeholder="Min 8 characters"
+                  />
+                  <button type="button" onClick={() => setShowPass(!showPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                    {showPass
+                      ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                  </span>
+                  <input type="password" required value={form.password2}
+                    onChange={(e) => setForm({ ...form, password2: e.target.value })}
+                    className="input-field pl-10" placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-3 text-base mt-2">
+                {loading ? (
+                  <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                  </svg>
+                ) : (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <line x1="19" y1="8" x2="19" y2="14"/>
+                      <line x1="22" y1="11" x2="16" y2="11"/>
+                    </svg>
+                    Create Account
+                  </>
+                )}
+              </button>
+            </form>
           </div>
-
-          <h2 className="text-2xl font-bold text-gray-800 mb-1">
-            Create Account ✨
-          </h2>
-
-          <p className="text-sm text-gray-500 mb-6">
-            Start your journey with JobNova
-          </p>
-
-          {/* FORM */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-
-            {/* FULL NAME */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
-              </label>
-              <input
-                type="text"
-                required
-                value={form.full_name}
-                onChange={(e) =>
-                  setForm({ ...form, full_name: e.target.value })
-                }
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="John Doe"
-              />
-            </div>
-
-            {/* EMAIL */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            {/* PASSWORD */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                value={form.password}
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
-                }
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="****"
-              />
-            </div>
-
-            {/* CONFIRM PASSWORD */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                required
-                value={form.password2}
-                onChange={(e) =>
-                  setForm({ ...form, password2: e.target.value })
-                }
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="****"
-              />
-            </div>
-
-            {/* ROLE */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Role
-              </label>
-              <select
-                value={form.role}
-                onChange={(e) =>
-                  setForm({ ...form, role: e.target.value })
-                }
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm"
-              >
-                <option value="seeker">Job Seeker 👤</option>
-                <option value="recruiter">Recruiter 💼</option>
-              </select>
-            </div>
-
-            {/* BUTTON */}
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg font-semibold hover:scale-105 transition"
-            >
-              Create Account
-            </button>
-
-          </form>
-
-          {/* LOGIN LINK */}
-          <p className="text-sm text-center mt-4 text-gray-500">
-            Already have an account?
-            <span className="text-blue-500 cursor-pointer hover:underline ml-1">
-              Login
-            </span>
-          </p>
-
         </div>
       </div>
-
     </div>
   );
-}  
+}
