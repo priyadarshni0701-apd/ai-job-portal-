@@ -48,24 +48,24 @@ const HOW_IT_WORKS = [
 
 const TESTIMONIALS = [
   {
-    name: "Priya Sharma",
-    role: "Software Engineer at Google",
-    avatar: "PS",
-    text: "JobNova matched me with my dream job at 94% match. The AI recommendations were spot on!",
+    name: "Arun Kumar",
+    role: "Frontend Developer",
+    avatar: "AK",
+    text: "JobNova helped me land a frontend developer role within 2 weeks. The AI recommendations were very accurate.",
     color: "bg-blue-600",
   },
   {
-    name: "Rahul Verma",
-    role: "Product Manager at Flipkart",
-    avatar: "RV",
-    text: "As a recruiter, the match percentage helped me shortlist candidates 3x faster.",
+    name: "Sneha Reddy",
+    role: "HR Recruiter",
+    avatar: "SR",
+    text: "Posting jobs and managing applications became very easy with JobNova. The dashboard is clean and simple.",
     color: "bg-orange-500",
   },
   {
-    name: "Ananya Singh",
-    role: "Data Scientist at Amazon",
-    avatar: "AS",
-    text: "Uploaded my resume and got 15 matched jobs within minutes. Incredible experience!",
+    name: "Vignesh Kumar",
+    role: "Data Analyst",
+    avatar: "VK",
+    text: "I uploaded my resume and quickly found jobs matching my skills. The experience was smooth and professional.",
     color: "bg-green-600",
   },
 ];
