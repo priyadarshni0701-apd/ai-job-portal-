@@ -47,7 +47,7 @@ export default function Navbar() {
               </svg>
             </div>
             <span style={{ fontFamily: 'Sora, sans-serif' }} className="text-xl font-800 text-slate-800">
-              Hire<span className="text-blue-600">AI</span>
+              Job<span className="text-blue-600">Nova</span>
             </span>
           </Link>
 
