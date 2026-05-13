@@ -41,14 +41,14 @@ export default function Register() {
               <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"/>
             </svg>
           </div>
-          <span className="text-2xl font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>HireAI</span>
+          <span className="text-2xl font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>JobNova</span>
         </Link>
         <div className="relative z-10">
           <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
             Start Your<br />Journey 🚀
           </h2>
           <p className="text-orange-100 text-lg mb-8">
-            Join millions of professionals finding jobs with AI.
+            Join thousands of professionals growing careers with JobNova
           </p>
           <div className="grid grid-cols-2 gap-4">
             {[
@@ -64,7 +64,7 @@ export default function Register() {
             ))}
           </div>
         </div>
-        <p className="text-orange-300 text-sm relative z-10">© 2024 HireAI. All rights reserved.</p>
+        <p className="text-orange-300 text-sm relative z-10">© 2026 JobNova. All rights reserved.</p>
       </div>
 
       {/* Right Panel */}
