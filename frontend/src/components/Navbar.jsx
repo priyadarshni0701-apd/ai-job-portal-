@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
-import logo from "./assets/logo.png";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
