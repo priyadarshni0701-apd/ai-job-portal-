@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const STATS = [
-  { value: "50K+", label: "Active Jobs" },
-  { value: "2M+", label: "Job Seekers" },
-  { value: "80K+", label: "Companies" },
-  { value: "95%", label: "Match Accuracy" },
+  { value: "25+", label: "Active Jobs" },
+  { value: "100+", label: "Job Seekers" },
+  { value: "15+", label: "Companies" },
+  { value: "94%", label: "Match Accuracy" },
 ];
 
 const CATEGORIES = [
