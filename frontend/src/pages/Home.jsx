@@ -51,7 +51,7 @@ const TESTIMONIALS = [
     name: "Priya Sharma",
     role: "Software Engineer at Google",
     avatar: "PS",
-    text: "HireAI matched me with my dream job at 94% match. The AI recommendations were spot on!",
+    text: "JobNova matched me with my dream job at 94% match. The AI recommendations were spot on!",
     color: "bg-blue-600",
   },
   {
@@ -153,7 +153,7 @@ export default function Home() {
       <section className="py-14 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
-            <h2 className="section-title">How HireAI Works</h2>
+            <h2 className="section-title">How JobNova Works</h2>
             <p className="section-sub">Land your dream job in 4 simple steps</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -176,7 +176,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="section-title">Loved by Professionals</h2>
-            <p className="section-sub">See what our users say about HireAI</p>
+            <p className="section-sub">See what our users say about JobNova</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t, i) => (
