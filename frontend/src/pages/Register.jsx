@@ -50,19 +50,6 @@ export default function Register() {
           <p className="text-orange-100 text-lg mb-8">
             Join thousands of professionals growing careers with JobNova
           </p>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { v: "50K+", l: "Active Jobs" },
-              { v: "2M+", l: "Job Seekers" },
-              { v: "80K+", l: "Companies" },
-              { v: "95%", l: "Match Rate" },
-            ].map((s, i) => (
-              <div key={i} className="bg-white/15 border border-white/20 rounded-xl p-4 text-center">
-                <div className="text-2xl font-extrabold" style={{ fontFamily: 'Sora, sans-serif' }}>{s.v}</div>
-                <div className="text-orange-200 text-xs mt-1">{s.l}</div>
-              </div>
-            ))}
-          </div>
         </div>
         <p className="text-orange-300 text-sm relative z-10">© 2026 JobNova. All rights reserved.</p>
       </div>
