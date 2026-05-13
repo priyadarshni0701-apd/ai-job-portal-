@@ -106,6 +106,8 @@ export default function Home() {
               )}
             </div>
           </div>
+          </div>
+          </section>
 
       {/* ── Job Categories ── */}
       <section className="py-14 bg-white">
@@ -228,5 +230,3 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  );
-}
