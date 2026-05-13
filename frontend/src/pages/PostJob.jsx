@@ -175,17 +175,17 @@ export default function PostJob() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Min Salary ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Min Salary (₹ LPA)</label>
                   <input type="number" value={form.salary_min}
                     onChange={(e) => setForm({ ...form, salary_min: e.target.value })}
-                    className="input-field" placeholder="50000"
+                    className="input-field" placeholder="5"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Max Salary ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Max Salary (₹ LPA)</label>
                   <input type="number" value={form.salary_max}
                     onChange={(e) => setForm({ ...form, salary_max: e.target.value })}
-                    className="input-field" placeholder="90000"
+                    className="input-field" placeholder="12"
                   />
                 </div>
               </div>
