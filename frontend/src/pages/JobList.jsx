@@ -159,7 +159,7 @@ export default function JobList() {
                     </button>
                     {job.salary_min && (
                       <p className="text-xs text-green-600 font-semibold whitespace-nowrap">
-                        ${Number(job.salary_min).toLocaleString()}+
+                        ₹{Number(job.salary_min).toLocaleString()}+
                       </p>
                     )}
                   </div>
