@@ -1,12 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const STATS = [
-  { value: "25+", label: "Active Jobs" },
-  { value: "100+", label: "Job Seekers" },
-  { value: "15+", label: "Companies" },
-  { value: "94%", label: "Match Accuracy" },
-];
 
 const CATEGORIES = [
   { icon: "💻", label: "Technology", count: "12,400 jobs" },
