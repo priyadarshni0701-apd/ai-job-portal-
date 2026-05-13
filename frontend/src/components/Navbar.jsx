@@ -39,8 +39,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="JobNova" className="w-10 h-10 object-contain" />
+          <Link to="/" className="flex items-center gap-3">
+          <img src={logo} alt="JobNova" className="w-12 h-12 object-contain" />
           <span style={{ fontfamily: "Sora, sans-serif" }} className="text-2xl font-bold text-slate-800">JobNova</span>
           </Link>
 
