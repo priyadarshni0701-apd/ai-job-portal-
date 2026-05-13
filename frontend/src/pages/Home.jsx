@@ -107,18 +107,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-14 max-w-3xl mx-auto">
-            {STATS.map((s, i) => (
-              <div key={i} className="text-center animate-fadeInUp" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="text-3xl font-extrabold text-white" style={{ fontFamily: 'Sora, sans-serif' }}>{s.value}</div>
-                <div className="text-blue-200 text-sm mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── Job Categories ── */}
       <section className="py-14 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
