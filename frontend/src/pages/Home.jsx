@@ -234,7 +234,7 @@ export default function Home() {
                   <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"/>
                 </svg>
               </div>
-              <span className="text-white font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>HireAI</span>
+              <span className="text-white font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>JobNova</span>
             </div>
             <p className="text-sm">© 2026 JobNova. Built with React + Django + AI.</p>
             <div className="flex gap-4 text-sm">

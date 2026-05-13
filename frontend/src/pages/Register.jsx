@@ -16,7 +16,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register(form);
-      toast.success("Account created! Welcome to HireAI 🎉");
+      toast.success("Account created! Welcome to JobNova🎉");
       navigate("/dashboard");
     } catch (err) {
       const errors = err.response?.data;
