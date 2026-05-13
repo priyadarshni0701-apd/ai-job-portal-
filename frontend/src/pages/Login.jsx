@@ -38,14 +38,14 @@ export default function Login() {
               <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"/>
             </svg>
           </div>
-          <span className="text-2xl font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>HireAI</span>
+          <span className="text-2xl font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>JobNova</span>
         </Link>
         <div className="relative z-10">
           <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
             Welcome<br />Back 👋
           </h2>
           <p className="text-blue-200 text-lg mb-8">
-            Your AI-matched dream job is waiting for you.
+            Your dream career journey starts with JobNova.
           </p>
           <div className="space-y-4">
             {["AI-powered job matching", "Real-time application tracking", "Smart resume skill extraction"].map((f, i) => (
@@ -60,7 +60,7 @@ export default function Login() {
             ))}
           </div>
         </div>
-        <p className="text-blue-300 text-sm relative z-10">© 2024 HireAI. All rights reserved.</p>
+        <p className="text-blue-300 text-sm relative z-10">© 2026 JobNova. All rights reserved.</p>
       </div>
 
       {/* Right Panel */}
@@ -69,7 +69,7 @@ export default function Login() {
           <div className="card p-8">
             <div className="mb-8">
               <h1 className="text-2xl font-bold text-slate-800 mb-1" style={{ fontFamily: 'Sora, sans-serif' }}>
-                Sign in to HireAI
+                Sign in to JobNova
               </h1>
               <p className="text-sm text-slate-500">
                 Don't have an account?{" "}
