@@ -236,7 +236,7 @@ export default function Home() {
               </div>
               <span className="text-white font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>HireAI</span>
             </div>
-            <p className="text-sm">© 2024 HireAI. Built with React + Django + AI.</p>
+            <p className="text-sm">© 2026 JobNova. Built with React + Django + AI.</p>
             <div className="flex gap-4 text-sm">
               <Link to="/jobs" className="hover:text-white transition-colors">Jobs</Link>
               <Link to="/register" className="hover:text-white transition-colors">Register</Link>
