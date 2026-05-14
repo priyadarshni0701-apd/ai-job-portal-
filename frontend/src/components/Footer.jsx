@@ -13,7 +13,7 @@ export default function Footer() {
 
         <div>
         <div className="flex items-center gap-2">
-        <img src={logo} alt="JobNova" className="w-10 h-10 object-contain />
+        <img src={logo} alt="JobNova" className="w-10 h-10 object-contain" />
           <h1 className="text-2xl font-bold text-blue-400">
             JobNova
           </h1>
