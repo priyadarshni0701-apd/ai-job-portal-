@@ -131,40 +131,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Job Categories */}
-      <section className="py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
-          <div className="text-center mb-10 animate-fadeInUp">
-            <h2 className="section-title">Explore by Category</h2>
-            <p className="section-sub">
-              Thousands of jobs across every industry
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {CATEGORIES.map((cat, i) => (
-              <Link
-                key={i}
-                to="/jobs"
-                className="card p-5 flex flex-col items-center text-center cursor-pointer group animate-fadeInUp"
-              >
-                <span className="text-3xl mb-3">{cat.icon}</span>
-
-                <h3 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
-                  {cat.label}
-                </h3>
-
-                <p className="text-xs text-slate-400 mt-1">
-                  {cat.count}
-                </p>
-              </Link>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
+     
       {/* How It Works */}
       <section className="py-14 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
