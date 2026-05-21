@@ -5,7 +5,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, get_user_model
 
-from .serializers import RegisterSerializer, LoginSerializer, UserProfileSerializer
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    UserProfileSerializer,
+    ProfileUpdateSerializer,
+    ProfilePhotoSerializer,
+    ChangePasswordSerializer,
+)
 
 User = get_user_model()
 
@@ -76,10 +83,7 @@ class LogoutView(APIView):
                 )
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response(
-                {"message": "Logout successful."},
-                status=status.HTTP_200_OK,
-            )
+            return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         except Exception:
             return Response(
                 {"error": "Invalid or expired token."},
@@ -87,9 +91,78 @@ class LogoutView(APIView):
             )
 
 
-class ProfileView(generics.RetrieveUpdateAPIView):
+class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = UserProfileSerializer
 
-    def get_object(self):
-        return self.request.user
+    def get(self, request):
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        serializer = ProfileUpdateSerializer(
+            request.user, data=request.data, partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Profile updated successfully.",
+                    "user": UserProfileSerializer(request.user).data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfilePhotoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ProfilePhotoSerializer(
+            request.user, data=request.FILES, partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Photo updated.",
+                    "profile_photo": request.build_absolute_uri(
+                        request.user.profile_photo.url
+                    ) if request.user.profile_photo else None,
+                },
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+            if not user.check_password(serializer.validated_data["old_password"]):
+                return Response(
+                    {"error": "Current password is incorrect."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            user.set_password(serializer.validated_data["new_password"])
+            user.save()
+            return Response(
+                {"message": "Password changed successfully."},
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PublicProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            serializer = UserProfileSerializer(user)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
