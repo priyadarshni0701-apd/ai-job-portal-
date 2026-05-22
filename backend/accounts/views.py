@@ -4,14 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, get_user_model
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
     UserProfileSerializer,
-    ProfileUpdateSerializer,
     ProfilePhotoSerializer,
-    ChangePasswordSerializer,
 )
 
 User = get_user_model()
@@ -93,76 +92,77 @@ class LogoutView(APIView):
 
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data)
 
     def patch(self, request):
-        serializer = ProfileUpdateSerializer(
+        serializer = UserProfileSerializer(
             request.user, data=request.data, partial=True
         )
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {
-                    "message": "Profile updated successfully.",
-                    "user": UserProfileSerializer(request.user).data,
-                },
-                status=status.HTTP_200_OK,
+                {"message": "Profile updated successfully.", "user": serializer.data}
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfilePhotoView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
         serializer = ProfilePhotoSerializer(
-            request.user, data=request.FILES, partial=True
+            request.user, data=request.data, partial=True
         )
         if serializer.is_valid():
             serializer.save()
             return Response(
                 {
-                    "message": "Photo updated.",
-                    "profile_photo": request.build_absolute_uri(
-                        request.user.profile_photo.url
-                    ) if request.user.profile_photo else None,
-                },
-                status=status.HTTP_200_OK,
+                    "message": "Photo uploaded successfully.",
+                    "profile_photo_url": request.user.profile_photo.url
+                    if request.user.profile_photo
+                    else None,
+                }
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        request.user.profile_photo.delete(save=True)
+        return Response({"message": "Photo removed."})
 
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = ChangePasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            user = request.user
-            if not user.check_password(serializer.validated_data["old_password"]):
-                return Response(
-                    {"error": "Current password is incorrect."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-            user.set_password(serializer.validated_data["new_password"])
-            user.save()
+        current = request.data.get("current_password")
+        new_pass = request.data.get("new_password")
+        confirm = request.data.get("confirm_password")
+
+        if not all([current, new_pass, confirm]):
             return Response(
-                {"message": "Password changed successfully."},
-                status=status.HTTP_200_OK,
+                {"error": "All fields are required."},
+                status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class PublicProfileView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, user_id):
-        try:
-            user = User.objects.get(id=user_id)
-            serializer = UserProfileSerializer(user)
-            return Response(serializer.data)
-        except User.DoesNotExist:
-            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        if not request.user.check_password(current):
+            return Response(
+                {"error": "Current password is incorrect."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if new_pass != confirm:
+            return Response(
+                {"error": "New passwords do not match."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if len(new_pass) < 8:
+            return Response(
+                {"error": "Password must be at least 8 characters."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        request.user.set_password(new_pass)
+        request.user.save()
+        return Response({"message": "Password changed successfully."})

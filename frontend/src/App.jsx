@@ -12,6 +12,7 @@ import JobList from "./pages/JobList";
 import JobDetail from "./pages/JobDetail";
 import PostJob from "./pages/PostJob";
 import ResumeUpload from "./pages/ResumeUpload";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/jobs" element={<PrivateRoute><JobList /></PrivateRoute>} />
           <Route path="/jobs/:id" element={<PrivateRoute><JobDetail /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 
           {/* Protected */}
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
