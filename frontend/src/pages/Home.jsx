@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const STATS = [
-  { value: "50K+", label: "Active Jobs" },
-  { value: "2M+",  label: "Job Seekers" },
-  { value: "80K+", label: "Companies" },
-  { value: "95%",  label: "Match Accuracy" },
-];
+
 
 const CATEGORIES = [
   { icon: "💻", label: "Technology",  count: "12,400 jobs" },
@@ -84,7 +79,7 @@ export default function Home() {
             {/* Logo in hero */}
             <div className="flex items-center justify-center gap-3 mb-8">
               <img
-                src="/logo-white.png"
+                src="/logo.png"
                 alt="JobNova"
                 className="h-12 w-auto object-contain"
                 onError={(e) => { e.target.style.display = "none"; }}
@@ -137,45 +132,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-14 max-w-3xl mx-auto">
-            {STATS.map((s, i) => (
-              <div key={i} className="text-center animate-fadeInUp"
-                style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="text-3xl font-extrabold text-white"
-                  style={{ fontFamily: "Sora, sans-serif" }}>
-                  {s.value}
-                </div>
-                <div className="text-blue-200 text-sm mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          
 
-      {/* ── Categories ── */}
-      <section className="py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 animate-fadeInUp">
-            <h2 className="section-title">Explore by Category</h2>
-            <p className="section-sub">Thousands of jobs across every industry</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {CATEGORIES.map((cat, i) => (
-              <Link key={i} to="/jobs"
-                className="card p-5 flex flex-col items-center text-center cursor-pointer group animate-fadeInUp"
-                style={{ animationDelay: `${i * 0.05}s` }}>
-                <span className="text-3xl mb-3">{cat.icon}</span>
-                <h3 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
-                  {cat.label}
-                </h3>
-                <p className="text-xs text-slate-400 mt-1">{cat.count}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
+     
       {/* ── How It Works ── */}
       <section className="py-14 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
