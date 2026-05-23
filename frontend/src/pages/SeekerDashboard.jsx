@@ -13,32 +13,38 @@ const STATUS_CONFIG = {
 };
 
 export default function SeekerDashboard() {
-  const { user } = useAuth();
+  const { user }                          = useAuth();
   const [recommendations, setRecommendations] = useState([]);
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("recommendations");
+  const [applications, setApplications]   = useState([]);
+  const [profile, setProfile]             = useState(null);
+  const [loading, setLoading]             = useState(true);
+  const [activeTab, setActiveTab]         = useState("recommendations");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [recRes, appRes] = await Promise.all([
+        const [recRes, appRes, profileRes] = await Promise.all([
           api.get("/resumes/recommended-jobs/"),
           api.get("/jobs/my-applications/"),
+          api.get("/auth/profile/"),
         ]);
         setRecommendations(recRes.data.results || []);
         setApplications(appRes.data.results || appRes.data);
-      } catch { toast.error("Failed to load dashboard"); }
-      finally { setLoading(false); }
+        setProfile(profileRes.data);
+      } catch {
+        toast.error("Failed to load dashboard");
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
 
   const stats = [
-    { label: "Applications", value: applications.length, icon: "📋", color: "bg-blue-50 text-blue-600" },
-    { label: "Shortlisted", value: applications.filter(a => a.status === "shortlisted").length, icon: "⭐", color: "bg-purple-50 text-purple-600" },
-    { label: "Hired", value: applications.filter(a => a.status === "hired").length, icon: "🎉", color: "bg-green-50 text-green-600" },
-    { label: "Matched Jobs", value: recommendations.length, icon: "🤖", color: "bg-orange-50 text-orange-600" },
+    { label: "Applications",  value: applications.length,                                    icon: "📋", color: "bg-blue-50 text-blue-600" },
+    { label: "Shortlisted",   value: applications.filter(a => a.status === "shortlisted").length, icon: "⭐", color: "bg-purple-50 text-purple-600" },
+    { label: "Hired",         value: applications.filter(a => a.status === "hired").length,       icon: "🎉", color: "bg-green-50 text-green-600" },
+    { label: "Matched Jobs",  value: recommendations.length,                                 icon: "🤖", color: "bg-orange-50 text-orange-600" },
   ];
 
   if (loading) return (
@@ -57,14 +63,14 @@ export default function SeekerDashboard() {
         {/* Welcome Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 animate-fadeInUp">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800" style={{ fontFamily: 'Sora, sans-serif' }}>
+            <h1 className="text-2xl font-bold text-slate-800" style={{ fontFamily: "Sora, sans-serif" }}>
               Hello, {user?.full_name?.split(" ")[0]} 👋
             </h1>
             <p className="text-slate-500 text-sm">Here's your job search overview</p>
           </div>
           <div className="flex gap-2">
-            <Link to="/resume" className="btn-outline text-sm">📄 Update Resume</Link>
-            <Link to="/jobs" className="btn-primary text-sm">Browse Jobs →</Link>
+            <Link to="/resume"  className="btn-outline text-sm">📄 Update Resume</Link>
+            <Link to="/jobs"    className="btn-primary text-sm">Browse Jobs →</Link>
           </div>
         </div>
 
@@ -75,11 +81,39 @@ export default function SeekerDashboard() {
               <div className={`w-10 h-10 rounded-xl ${s.color} flex items-center justify-center text-xl mb-3`}>
                 {s.icon}
               </div>
-              <div className="text-2xl font-bold text-slate-800" style={{ fontFamily: 'Sora, sans-serif' }}>{s.value}</div>
+              <div className="text-2xl font-bold text-slate-800" style={{ fontFamily: "Sora, sans-serif" }}>
+                {s.value}
+              </div>
               <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
             </div>
           ))}
         </div>
+
+        {/* Profile Completion Banner */}
+        {profile && profile.profile_completion < 70 && (
+          <div className="card p-4 mb-6 border-l-4 border-blue-500 bg-blue-50 animate-fadeInUp">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl shrink-0">💡</span>
+                <div>
+                  <p className="text-sm font-semibold text-blue-800">
+                    Complete your profile to get better job matches
+                  </p>
+                  <p className="text-xs text-blue-600 mt-0.5">
+                    Your profile is {profile.profile_completion}% complete.
+                    Add more details to improve your AI match score.
+                  </p>
+                  <div className="match-bar-track mt-2 max-w-xs">
+                    <div className="match-bar-fill" style={{ width: `${profile.profile_completion}%` }}/>
+                  </div>
+                </div>
+              </div>
+              <Link to="/profile" className="btn-primary text-xs px-4 py-2 shrink-0">
+                Complete Profile →
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Resume Alert */}
         {recommendations.length === 0 && (
@@ -99,7 +133,7 @@ export default function SeekerDashboard() {
         <div className="flex border-b border-slate-200 mb-6">
           {[
             { id: "recommendations", label: `🤖 AI Matches (${recommendations.length})` },
-            { id: "applications", label: `📋 Applications (${applications.length})` },
+            { id: "applications",    label: `📋 Applications (${applications.length})` },
           ].map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`px-5 py-3 text-sm font-medium border-b-2 transition-all ${
@@ -112,20 +146,23 @@ export default function SeekerDashboard() {
           ))}
         </div>
 
-        {/* Tab Content */}
+        {/* Recommendations Tab */}
         {activeTab === "recommendations" && (
           <div className="space-y-4">
             {recommendations.length === 0 ? (
               <div className="card p-12 text-center">
                 <div className="text-5xl mb-4">🤖</div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">No matches yet</h3>
-                <p className="text-sm text-slate-400 mb-4">Upload your resume to get AI-powered job recommendations</p>
+                <p className="text-sm text-slate-400 mb-4">
+                  Upload your resume to get AI-powered job recommendations
+                </p>
                 <Link to="/resume" className="btn-primary inline-flex">Upload Resume →</Link>
               </div>
             ) : recommendations.map(({ job, match_percentage }, i) => (
               <div key={job.id} className="card p-5 animate-fadeInUp" style={{ animationDelay: `${i * 0.05}s` }}>
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-xl font-bold text-blue-600 shrink-0" style={{ fontFamily: 'Sora, sans-serif' }}>
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-xl font-bold text-blue-600 shrink-0"
+                    style={{ fontFamily: "Sora, sans-serif" }}>
                     {job.company?.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -135,14 +172,18 @@ export default function SeekerDashboard() {
                         <p className="text-sm text-slate-500">{job.company} · {job.location}</p>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className={`text-xl font-extrabold ${match_percentage >= 70 ? "text-green-600" : match_percentage >= 40 ? "text-orange-500" : "text-slate-400"}`} style={{ fontFamily: 'Sora, sans-serif' }}>
+                        <div className={`text-xl font-extrabold ${
+                          match_percentage >= 70 ? "text-green-600"
+                          : match_percentage >= 40 ? "text-orange-500"
+                          : "text-slate-400"
+                        }`} style={{ fontFamily: "Sora, sans-serif" }}>
                           {match_percentage}%
                         </div>
                         <div className="text-xs text-slate-400">match</div>
                       </div>
                     </div>
                     <div className="match-bar-track mt-3 mb-3">
-                      <div className="match-bar-fill" style={{ width: `${match_percentage}%` }} />
+                      <div className="match-bar-fill" style={{ width: `${match_percentage}%` }}/>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex flex-wrap gap-1.5">
@@ -150,7 +191,9 @@ export default function SeekerDashboard() {
                           <span key={s} className="badge badge-gray text-xs">{s}</span>
                         ))}
                       </div>
-                      <Link to={`/jobs/${job.id}`} className="btn-primary text-xs px-4 py-1.5">Apply →</Link>
+                      <Link to={`/jobs/${job.id}`} className="btn-primary text-xs px-4 py-1.5">
+                        Apply →
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -159,17 +202,22 @@ export default function SeekerDashboard() {
           </div>
         )}
 
+        {/* Applications Tab */}
         {activeTab === "applications" && (
           <div className="space-y-3">
             {applications.length === 0 ? (
               <div className="card p-12 text-center">
                 <div className="text-5xl mb-4">📋</div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">No applications yet</h3>
-                <p className="text-sm text-slate-400 mb-4">Start applying for jobs to track them here</p>
+                <p className="text-sm text-slate-400 mb-4">
+                  Start applying for jobs to track them here
+                </p>
                 <Link to="/jobs" className="btn-primary inline-flex">Browse Jobs →</Link>
               </div>
             ) : applications.map((app, i) => (
-              <div key={app.id} className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fadeInUp" style={{ animationDelay: `${i * 0.05}s` }}>
+              <div key={app.id}
+                className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fadeInUp"
+                style={{ animationDelay: `${i * 0.05}s` }}>
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center font-bold text-blue-600 shrink-0">
                     {app.job.company?.charAt(0)}

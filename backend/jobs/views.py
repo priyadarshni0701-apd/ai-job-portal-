@@ -21,13 +21,9 @@ from resumes.utils import calculate_match_percentage
 # ─────────────────────────────────────────────
 
 class JobListCreateView(generics.ListCreateAPIView):
-    """
-    GET  /api/jobs/          → List all active jobs (all authenticated users)
-    POST /api/jobs/          → Create a new job (recruiters only)
-    """
-    queryset = Job.objects.filter(is_active=True).select_related("recruiter")
+    queryset       = Job.objects.filter(is_active=True).select_related("recruiter")
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ["title", "company", "location", "required_skills"]
+    search_fields  = ["title", "company", "location", "required_skills"]
     ordering_fields = ["created_at", "salary_min", "salary_max"]
 
     def get_serializer_class(self):
@@ -38,8 +34,29 @@ class JobListCreateView(generics.ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "POST":
             return [IsRecruiter()]
-        return []
+        return [IsAuthenticated()]
 
+    def get_queryset(self):
+        queryset = Job.objects.filter(
+            is_active=True
+        ).select_related("recruiter")
+
+        # Filter by job type
+        job_type = self.request.query_params.get("job_type")
+        if job_type:
+            queryset = queryset.filter(job_type=job_type)
+
+        # Filter by experience level
+        experience = self.request.query_params.get("experience_level")
+        if experience:
+            queryset = queryset.filter(experience_level=experience)
+
+        # Filter by location
+        location = self.request.query_params.get("location")
+        if location:
+            queryset = queryset.filter(location__icontains=location)
+
+        return queryset
 
 class JobDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
