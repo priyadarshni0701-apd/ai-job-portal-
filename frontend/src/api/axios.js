@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -20,7 +20,7 @@ api.interceptors.response.use(
       try {
         const refresh = localStorage.getItem("refresh");
         const { data } = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/auth/token/refresh/`,
+          `${import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api"}/auth/token/refresh/`,
           { refresh }
         );
         localStorage.setItem("access", data.access);

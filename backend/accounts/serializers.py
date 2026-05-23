@@ -5,11 +5,11 @@ User = get_user_model()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8)
+    password  = serializers.CharField(write_only=True, min_length=8)
     password2 = serializers.CharField(write_only=True)
 
     class Meta:
-        model = User
+        model  = User
         fields = ["id", "email", "full_name", "role", "password", "password2"]
 
     def validate(self, attrs):
@@ -19,27 +19,55 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop("password2")
-        user = User.objects.create_user(**validated_data)
-        return user
+        return User.objects.create_user(**validated_data)
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+class SeekerLoginSerializer(serializers.Serializer):
+    email    = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        from django.contrib.auth import authenticate
+        user = authenticate(email=attrs["email"], password=attrs["password"])
+        if not user:
+            raise serializers.ValidationError("Invalid email or password.")
+        if user.role != "seeker":
+            raise serializers.ValidationError(
+                "This account is not a Job Seeker account. Please use Recruiter login."
+            )
+        if not user.is_active:
+            raise serializers.ValidationError("Account is disabled.")
+        attrs["user"] = user
+        return attrs
+
+
+class RecruiterLoginSerializer(serializers.Serializer):
+    email    = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        from django.contrib.auth import authenticate
+        user = authenticate(email=attrs["email"], password=attrs["password"])
+        if not user:
+            raise serializers.ValidationError("Invalid email or password.")
+        if user.role != "recruiter":
+            raise serializers.ValidationError(
+                "This account is not a Recruiter account. Please use Job Seeker login."
+            )
+        if not user.is_active:
+            raise serializers.ValidationError("Account is disabled.")
+        attrs["user"] = user
+        return attrs
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    profile_completion  = serializers.ReadOnlyField()
-    profile_photo_url   = serializers.SerializerMethodField()
+    profile_completion = serializers.ReadOnlyField()
+    profile_photo_url  = serializers.SerializerMethodField()
 
-    # Numeric fields — must allow null
-    graduation_year          = serializers.IntegerField(allow_null=True, required=False)
-    total_experience_years   = serializers.FloatField(allow_null=True,   required=False)
+    graduation_year        = serializers.IntegerField(allow_null=True, required=False)
+    total_experience_years = serializers.FloatField(allow_null=True,   required=False)
+    date_of_birth          = serializers.DateField(allow_null=True,    required=False)
 
-    # Date field — must allow null
-    date_of_birth = serializers.DateField(allow_null=True, required=False)
-
-    # All text fields — allow blank so empty string is valid
     phone             = serializers.CharField(allow_blank=True, required=False)
     location          = serializers.CharField(allow_blank=True, required=False)
     bio               = serializers.CharField(allow_blank=True, required=False)
@@ -59,7 +87,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     industry          = serializers.CharField(allow_blank=True, required=False)
 
     class Meta:
-        model = User
+        model  = User
         fields = [
             "id", "email", "full_name", "role", "date_joined",
             "profile_photo", "profile_photo_url",
@@ -78,37 +106,28 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_profile_photo_url(self, obj):
         if obj.profile_photo:
-            return obj.profile_photo.url
+            try:
+                return obj.profile_photo.url
+            except Exception:
+                return None
         return None
 
     def to_internal_value(self, data):
-        """
-        Convert empty strings → None for
-        integer, float, and date fields.
-        """
         mutable = data.copy() if hasattr(data, "copy") else dict(data)
-
-        integer_float_date_fields = [
-            "graduation_year",
-            "total_experience_years",
-            "date_of_birth",
-        ]
-        for field in integer_float_date_fields:
+        for field in ["graduation_year", "total_experience_years", "date_of_birth"]:
             if field in mutable and mutable[field] == "":
                 mutable[field] = None
-
         return super().to_internal_value(mutable)
 
 
 class ProfilePhotoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model  = User
         fields = ["profile_photo"]
 
     def validate_profile_photo(self, value):
         if value.size > 3 * 1024 * 1024:
             raise serializers.ValidationError("Image must be under 3MB.")
-        allowed = ["image/jpeg", "image/png", "image/webp"]
-        if value.content_type not in allowed:
+        if value.content_type not in ["image/jpeg", "image/png", "image/webp"]:
             raise serializers.ValidationError("Only JPG, PNG, WEBP allowed.")
         return value

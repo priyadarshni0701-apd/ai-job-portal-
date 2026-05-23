@@ -24,18 +24,18 @@ class Job(models.Model):
         related_name="posted_jobs",
         limit_choices_to={"role": "recruiter"},
     )
-    title = models.CharField(max_length=255)
-    company = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default="full_time")
-    experience_level = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default="entry")
-    description = models.TextField()
-    required_skills = models.JSONField(default=list)   # e.g. ["Python", "Django", "REST API"]
-    salary_min = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    salary_max = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    title             = models.CharField(max_length=255)
+    company           = models.CharField(max_length=255)
+    location          = models.CharField(max_length=255)
+    job_type          = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default="full_time")
+    experience_level  = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default="entry")
+    description       = models.TextField()
+    required_skills   = models.JSONField(default=list)
+    salary_min        = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    salary_max        = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    is_active         = models.BooleanField(default=True)
+    created_at        = models.DateTimeField(auto_now_add=True)
+    updated_at        = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-created_at"]
@@ -46,28 +46,49 @@ class Job(models.Model):
 
 class Application(models.Model):
     STATUS_CHOICES = (
-        ("applied", "Applied"),
-        ("reviewing", "Reviewing"),
+        ("applied",     "Applied"),
+        ("reviewing",   "Reviewing"),
         ("shortlisted", "Shortlisted"),
-        ("rejected", "Rejected"),
-        ("hired", "Hired"),
+        ("rejected",    "Rejected"),
+        ("hired",       "Hired"),
     )
 
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="applications")
-    applicant = models.ForeignKey(
+    job             = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="applications")
+    applicant       = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="applications",
     )
-    cover_letter = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="applied")
+    cover_letter     = models.TextField(blank=True)
+    status           = models.CharField(max_length=20, choices=STATUS_CHOICES, default="applied")
     match_percentage = models.FloatField(default=0.0)
-    applied_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    applied_at       = models.DateTimeField(auto_now_add=True)
+    updated_at       = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ("job", "applicant")   # prevent duplicate applications
-        ordering = ["-applied_at"]
+        unique_together = ("job", "applicant")
+        ordering        = ["-applied_at"]
 
     def __str__(self):
         return f"{self.applicant.email} → {self.job.title}"
+
+
+class SavedJob(models.Model):
+    user     = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="saved_jobs",
+    )
+    job      = models.ForeignKey(
+        Job,
+        on_delete=models.CASCADE,
+        related_name="saved_by",
+    )
+    saved_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "job")
+        ordering        = ["-saved_at"]
+
+    def __str__(self):
+        return f"{self.user.email} saved {self.job.title}"

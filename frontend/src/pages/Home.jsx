@@ -110,19 +110,26 @@ export default function Home() {
                 </Link>
               ) : (
                 <>
-                  <Link
-                    to="/register"
-                    className="btn-accent text-base px-8 py-3"
-                  >
-                    Get Started Free →
-                  </Link>
-
-                  <Link
-                    to="/jobs"
-                    className="btn-outline border-white text-white hover:bg-white hover:text-blue-700 text-base px-8 py-3"
-                  >
-                    Browse Jobs
-                  </Link>
+                 {/* In the Hero section, replace the buttons with: */}
+<div className="flex flex-col sm:flex-row gap-3 justify-center">
+  {user ? (
+    <Link to="/dashboard" className="btn-accent text-base px-8 py-3">
+      Go to Dashboard →
+    </Link>
+  ) : (
+    <>
+      <Link to="/login" className="btn-primary text-base px-8 py-3">
+        🔍 Job Seeker Login
+      </Link>
+      <Link to="/login/recruiter" className="btn-accent text-base px-8 py-3">
+        🏢 Recruiter Login
+      </Link>
+      <Link to="/register" className="btn-outline border-white text-white hover:bg-white hover:text-blue-700 text-base px-8 py-3">
+        Register Free
+      </Link>
+    </>
+  )}
+</div>
                 </>
               )}
             </div>

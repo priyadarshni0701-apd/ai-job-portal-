@@ -4,7 +4,7 @@ import api from "../api/axios";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser]       = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,9 +24,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
-    const { data } = await api.post("/auth/login/", { email, password });
-    localStorage.setItem("access", data.tokens.access);
+  const loginSeeker = async (email, password) => {
+    const { data } = await api.post("/auth/login/seeker/", { email, password });
+    localStorage.setItem("access",  data.tokens.access);
+    localStorage.setItem("refresh", data.tokens.refresh);
+    setUser(data.user);
+    return data.user;
+  };
+
+  const loginRecruiter = async (email, password) => {
+    const { data } = await api.post("/auth/login/recruiter/", { email, password });
+    localStorage.setItem("access",  data.tokens.access);
     localStorage.setItem("refresh", data.tokens.refresh);
     setUser(data.user);
     return data.user;
@@ -34,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (payload) => {
     const { data } = await api.post("/auth/register/", payload);
-    localStorage.setItem("access", data.tokens.access);
+    localStorage.setItem("access",  data.tokens.access);
     localStorage.setItem("refresh", data.tokens.refresh);
     setUser(data.user);
     return data.user;
@@ -42,14 +50,18 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout/", { refresh: localStorage.getItem("refresh") });
+      await api.post("/auth/logout/", {
+        refresh: localStorage.getItem("refresh"),
+      });
     } catch {}
     localStorage.clear();
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, fetchProfile }}>
+    <AuthContext.Provider
+      value={{ user, loading, loginSeeker, loginRecruiter, register, logout, fetchProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );

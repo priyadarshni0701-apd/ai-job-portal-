@@ -5,7 +5,8 @@ import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import SeekerLogin from "./pages/SeekerLogin";
+import RecruiterLogin from "./pages/RecruiterLogin";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import JobList from "./pages/JobList";
@@ -33,19 +34,29 @@ export default function App() {
         <Navbar />
         <Routes>
           {/* Public */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/jobs" element={<PrivateRoute><JobList /></PrivateRoute>} />
+          <Route path="/"                  element={<Home />} />
+          <Route path="/login"             element={<SeekerLogin />} />
+          <Route path="/login/recruiter"   element={<RecruiterLogin />} />
+          <Route path="/register"          element={<Register />} />
+
+          {/* Public — job browsing */}
+          <Route path="/jobs"     element={<PrivateRoute><JobList /></PrivateRoute>} />
           <Route path="/jobs/:id" element={<PrivateRoute><JobDetail /></PrivateRoute>} />
-          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 
-          {/* Protected */}
+          {/* Protected — all roles */}
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/resume" element={<RoleRoute role="seeker"><ResumeUpload /></RoleRoute>} />
-          <Route path="/post-job" element={<RoleRoute role="recruiter"><PostJob /></RoleRoute>} />
+          <Route path="/profile"   element={<PrivateRoute><Profile /></PrivateRoute>} />
 
-          {/* Fallback */}
+          {/* Protected — seeker only */}
+          <Route path="/resume"
+            element={<RoleRoute role="seeker"><ResumeUpload /></RoleRoute>}
+          />
+
+          {/* Protected — recruiter only */}
+          <Route path="/post-job"
+            element={<RoleRoute role="recruiter"><PostJob /></RoleRoute>}
+          />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </AuthProvider>
