@@ -32,15 +32,18 @@ export default function SeekerLogin() {
           <div className="absolute top-20 left-20 w-64 h-64 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-cyan-400 blur-3xl" />
         </div>
-        <Link to="/" className="flex items-center gap-2 relative z-10">
-          <div className="w-9 h-9 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-              <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"/>
-            </svg>
-          </div>
-          <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>HireAI</span>
-        </Link>
-
+        {/* Left panel logo */}
+<Link to="/" className="flex items-center gap-2 relative z-10">
+  <img
+    src="/logo.png"
+    alt="JobNova"
+    className="h-9 w-auto object-contain"
+    onError={(e) => { e.target.style.display = "none"; }}
+  />
+  <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
+    Job<span className="text-orange-300">Nova</span>
+  </span>
+</Link>
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-sm mb-6">
             🔍 Job Seeker Portal

@@ -36,13 +36,16 @@ export default function Register() {
           <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-blue-400 blur-3xl" />
         </div>
         <Link to="/" className="flex items-center gap-2 relative z-10">
-          <div className="w-9 h-9 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-              <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"/>
-            </svg>
-          </div>
-          <span className="text-2xl font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>JobNova</span>
-        </Link>
+  <img
+    src="/logo.png"
+    alt="JobNova"
+    className="h-9 w-auto object-contain"
+    onError={(e) => { e.target.style.display = "none"; }}
+  />
+  <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
+    Job<span className="text-orange-200">Nova</span>
+  </span>
+</Link>
         <div className="relative z-10">
           <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
             Start Your<br />Journey 🚀

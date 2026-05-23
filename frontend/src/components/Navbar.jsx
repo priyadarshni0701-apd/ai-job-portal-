@@ -41,17 +41,41 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* ── Logo ── */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <img src={logo} alt="JobNova Logo" className="w-10 h-10 object-contain" />
-            </div>
-            <span
-              style={{ fontFamily: "Sora, sans-serif" }}
-              className="text-xl font-bold text-slate-800"
-            >
-              Job<span className="text-blue-600">Nova</span>
-            </span>
-          </Link>
+<Link to="/" className="flex items-center gap-2 shrink-0">
+  <img
+    src="/logo.png"
+    alt="JobNova Logo"
+    className="h-8 w-auto object-contain"
+    onError={(e) => {
+      // Fallback if logo not found
+      e.target.style.display = "none";
+      e.target.nextSibling.style.display = "flex";
+    }}
+  />
+  {/* Fallback icon (hidden if logo loads) */}
+  <div
+    className="w-8 h-8 rounded-lg bg-blue-600 items-center justify-center hidden"
+    aria-hidden="true"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z"
+        fill="white" fillOpacity="0.9"
+      />
+      <path
+        d="M16 7V5C16 3.9 15.1 3 14 3H10C8.9 3 8 3.9 8 5V7"
+        stroke="white" strokeWidth="2" strokeLinecap="round"
+      />
+      <circle cx="12" cy="14" r="2" fill="#0057e7" />
+    </svg>
+  </div>
+  <span
+    style={{ fontFamily: "Sora, sans-serif" }}
+    className="text-xl font-bold text-slate-800"
+  >
+    Job<span className="text-blue-600">Nova</span>
+  </span>
+</Link>
 
           {/* ── Desktop Nav Links ── */}
           <div className="hidden md:flex items-center gap-6">
