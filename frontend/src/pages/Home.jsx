@@ -1,18 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-
-
-const CATEGORIES = [
-  { icon: "💻", label: "Technology",  count: "12,400 jobs" },
-  { icon: "📊", label: "Finance",     count: "8,200 jobs" },
-  { icon: "🏥", label: "Healthcare",  count: "6,800 jobs" },
-  { icon: "🎨", label: "Design",      count: "4,500 jobs" },
-  { icon: "📱", label: "Marketing",   count: "5,100 jobs" },
-  { icon: "🏗️", label: "Engineering", count: "9,300 jobs" },
-  { icon: "📚", label: "Education",   count: "3,700 jobs" },
-  { icon: "⚖️", label: "Legal",       count: "2,100 jobs" },
-];
+import logo from "../assets/logo.png";
 
 const HOW_IT_WORKS = [
   {
@@ -73,6 +61,7 @@ export default function Home() {
           <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-orange-400 blur-3xl" />
         </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fadeInUp">
 
@@ -81,8 +70,7 @@ export default function Home() {
               <img
                 src="/logo.png"
                 alt="JobNova"
-                className="h-12 w-auto object-contain"
-                onError={(e) => { e.target.style.display = "none"; }}
+                className="h-14 w-auto object-contain"
               />
               <span
                 className="text-4xl font-extrabold text-white"
@@ -105,7 +93,7 @@ export default function Home() {
               <span className="text-orange-400">with AI Precision</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
               Upload your resume. Our AI reads your skills and matches you with
               the most relevant jobs — ranked by compatibility percentage.
             </p>
@@ -117,26 +105,30 @@ export default function Home() {
                 </Link>
               ) : (
                 <>
-                  <Link to="/login" className="btn-primary bg-white text-blue-700 hover:bg-blue-50 text-base px-8 py-3">
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 font-semibold text-base px-8 py-3 rounded-lg hover:bg-blue-50 transition-all"
+                  >
                     🔍 Job Seeker Login
                   </Link>
                   <Link to="/login/recruiter" className="btn-accent text-base px-8 py-3">
                     🏢 Recruiter Login
                   </Link>
-                  <Link to="/register"
-                    className="btn-outline border-white text-white hover:bg-white hover:text-blue-700 text-base px-8 py-3">
+                  <Link
+                    to="/register"
+                    className="btn-outline border-white text-white hover:bg-white hover:text-blue-700 text-base px-8 py-3"
+                  >
                     Register Free
                   </Link>
                 </>
               )}
             </div>
           </div>
+        </div>
+      </section>
 
-          
-
-     
       {/* ── How It Works ── */}
-      <section className="py-14 bg-slate-50">
+      <section className="py-14 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="section-title">How JobNova Works</h2>
@@ -144,14 +136,21 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {HOW_IT_WORKS.map((item, i) => (
-              <div key={i} className="card p-6 relative animate-fadeInUp"
-                style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="text-5xl font-extrabold text-blue-50 absolute top-4 right-4"
-                  style={{ fontFamily: "Sora, sans-serif" }}>
+              <div
+                key={i}
+                className="card p-6 relative animate-fadeInUp"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <div
+                  className="text-5xl font-extrabold text-blue-50 absolute top-4 right-4"
+                  style={{ fontFamily: "Sora, sans-serif" }}
+                >
                   {item.step}
                 </div>
                 <div className="text-3xl mb-4">{item.icon}</div>
-                <h3 className="text-base font-semibold text-slate-800 mb-2">{item.title}</h3>
+                <h3 className="text-base font-semibold text-slate-800 mb-2">
+                  {item.title}
+                </h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -160,7 +159,7 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ── */}
-      <section className="py-14 bg-white">
+      <section className="py-14 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="section-title">Loved by Professionals</h2>
@@ -168,10 +167,15 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="card p-6 animate-fadeInUp"
-                style={{ animationDelay: `${i * 0.1}s` }}>
+              <div
+                key={i}
+                className="card p-6 animate-fadeInUp"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-full ${t.color} text-white flex items-center justify-center font-bold text-sm`}>
+                  <div
+                    className={`w-10 h-10 rounded-full ${t.color} text-white flex items-center justify-center font-bold text-sm`}
+                  >
                     {t.avatar}
                   </div>
                   <div>
@@ -193,7 +197,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── CTA Banner ── */}
       <section className="py-14 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="max-w-3xl mx-auto px-4 text-center animate-fadeInUp">
           <h2
@@ -210,8 +214,10 @@ export default function Home() {
             <Link to="/register" className="btn-accent text-base px-8 py-3">
               Create Free Account →
             </Link>
-            <Link to="/jobs"
-              className="btn-outline border-white text-white hover:bg-white hover:text-blue-700 text-base px-8 py-3">
+            <Link
+              to="/jobs"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-700 text-base px-8 py-3"
+            >
               Browse Jobs
             </Link>
           </div>
@@ -226,10 +232,9 @@ export default function Home() {
             {/* Logo */}
             <div className="flex items-center gap-3">
               <img
-                src="/logo-white.png"
+                src={logo}
                 alt="JobNova"
-                className="h-8 w-auto object-contain"
-                onError={(e) => { e.target.style.display = "none"; }}
+                className="h-8 w-auto object-contain brightness-200"
               />
               <span
                 className="text-white font-bold text-lg"
@@ -244,9 +249,9 @@ export default function Home() {
             </p>
 
             <div className="flex gap-5 text-sm">
-              <Link to="/jobs"    className="hover:text-white transition-colors">Jobs</Link>
+              <Link to="/jobs"     className="hover:text-white transition-colors">Jobs</Link>
               <Link to="/register" className="hover:text-white transition-colors">Register</Link>
-              <Link to="/login"   className="hover:text-white transition-colors">Login</Link>
+              <Link to="/login"    className="hover:text-white transition-colors">Login</Link>
             </div>
           </div>
         </div>

@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import logo from "../assets/logo.png";
 
 export default function RecruiterLogin() {
-  const { loginRecruiter } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm]       = useState({ email: "", password: "" });
-  const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false);
+  const { loginRecruiter }            = useAuth();
+  const navigate                      = useNavigate();
+  const [form, setForm]               = useState({ email: "", password: "" });
+  const [loading, setLoading]         = useState(false);
+  const [showPass, setShowPass]       = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,29 +27,28 @@ export default function RecruiterLogin() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Panel */}
+
+      {/* ── Left Panel ── */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-500 via-orange-600 to-red-700 text-white flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-yellow-400 blur-3xl" />
         </div>
-        <Link to="/" className="flex items-center gap-2 relative z-10">
-  <img
-    src="/logo.png"
-    alt="JobNova"
-    className="h-9 w-auto object-contain"
-    onError={(e) => { e.target.style.display = "none"; }}
-  />
-  <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
-    Job<span className="text-yellow-300">Nova</span>
-  </span>
-</Link>
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 relative z-10">
+          <img src={logo} alt="JobNova" className="h-10 w-auto object-contain" />
+          <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
+            Job<span className="text-yellow-300">Nova</span>
+          </span>
+        </Link>
 
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-sm mb-6">
             🏢 Recruiter Portal
           </div>
-          <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: "Sora, sans-serif" }}>
+          <h2 className="text-4xl font-extrabold mb-4 leading-tight"
+            style={{ fontFamily: "Sora, sans-serif" }}>
             Hire Smarter<br />with AI 🤖
           </h2>
           <p className="text-orange-100 text-lg mb-8">
@@ -73,25 +73,34 @@ export default function RecruiterLogin() {
           </div>
         </div>
 
-        <div className="relative z-10">
-          <p className="text-orange-200 text-sm">
-            Are you a job seeker?{" "}
-            <Link to="/login" className="text-white font-semibold underline">
-              Seeker Login →
-            </Link>
-          </p>
-        </div>
+        <p className="text-orange-200 text-sm relative z-10">
+          Are you a job seeker?{" "}
+          <Link to="/login" className="text-white font-semibold underline">
+            Seeker Login →
+          </Link>
+        </p>
       </div>
 
-      {/* Right Panel */}
+      {/* ── Right Panel ── */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-slate-50">
         <div className="w-full max-w-md animate-fadeInUp">
           <div className="card p-8">
+
+            {/* Mobile logo */}
+            <div className="flex lg:hidden items-center justify-center gap-2 mb-6">
+              <img src={logo} alt="JobNova" className="h-9 w-auto object-contain" />
+              <span className="text-xl font-bold text-slate-800"
+                style={{ fontFamily: "Sora, sans-serif" }}>
+                Job<span className="text-blue-600">Nova</span>
+              </span>
+            </div>
+
             <div className="text-center mb-8">
               <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-3xl mx-auto mb-4">
                 🏢
               </div>
-              <h1 className="text-2xl font-bold text-slate-800 mb-1" style={{ fontFamily: "Sora, sans-serif" }}>
+              <h1 className="text-2xl font-bold text-slate-800 mb-1"
+                style={{ fontFamily: "Sora, sans-serif" }}>
                 Recruiter Login
               </h1>
               <p className="text-sm text-slate-500">
@@ -111,9 +120,11 @@ export default function RecruiterLogin() {
                       <polyline points="22,6 12,13 2,6"/>
                     </svg>
                   </span>
-                  <input type="email" required value={form.email}
+                  <input
+                    type="email" required value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="input-field pl-10" placeholder="recruiter@company.com"
+                    className="input-field pl-10"
+                    placeholder="recruiter@company.com"
                   />
                 </div>
               </div>
@@ -133,7 +144,8 @@ export default function RecruiterLogin() {
                     type={showPass ? "text" : "password"} required
                     value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
-                    className="input-field pl-10 pr-10" placeholder="••••••••"
+                    className="input-field pl-10 pr-10"
+                    placeholder="••••••••"
                   />
                   <button type="button" onClick={() => setShowPass(!showPass)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">

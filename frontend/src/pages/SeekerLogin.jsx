@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import logo from "../assets/logo.png";
 
 export default function SeekerLogin() {
-  const { loginSeeker } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm]       = useState({ email: "", password: "" });
-  const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false);
+  const { loginSeeker }               = useAuth();
+  const navigate                      = useNavigate();
+  const [form, setForm]               = useState({ email: "", password: "" });
+  const [loading, setLoading]         = useState(false);
+  const [showPass, setShowPass]       = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,29 +27,28 @@ export default function SeekerLogin() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Panel */}
+
+      {/* ── Left Panel ── */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 text-white flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-64 h-64 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-cyan-400 blur-3xl" />
         </div>
-        {/* Left panel logo */}
-<Link to="/" className="flex items-center gap-2 relative z-10">
-  <img
-    src="/logo.png"
-    alt="JobNova"
-    className="h-9 w-auto object-contain"
-    onError={(e) => { e.target.style.display = "none"; }}
-  />
-  <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
-    Job<span className="text-orange-300">Nova</span>
-  </span>
-</Link>
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 relative z-10">
+          <img src={logo} alt="JobNova" className="h-10 w-auto object-contain" />
+          <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
+            Job<span className="text-orange-300">Nova</span>
+          </span>
+        </Link>
+
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-sm mb-6">
             🔍 Job Seeker Portal
           </div>
-          <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: "Sora, sans-serif" }}>
+          <h2 className="text-4xl font-extrabold mb-4 leading-tight"
+            style={{ fontFamily: "Sora, sans-serif" }}>
             Find Your<br />Dream Job 🎯
           </h2>
           <p className="text-blue-200 text-lg mb-8">
@@ -73,26 +73,34 @@ export default function SeekerLogin() {
           </div>
         </div>
 
-        <div className="relative z-10">
-          <p className="text-blue-300 text-sm">
-            Are you a recruiter?{" "}
-            <Link to="/login/recruiter" className="text-white font-semibold underline">
-              Recruiter Login →
-            </Link>
-          </p>
-        </div>
+        <p className="text-blue-300 text-sm relative z-10">
+          Are you a recruiter?{" "}
+          <Link to="/login/recruiter" className="text-white font-semibold underline">
+            Recruiter Login →
+          </Link>
+        </p>
       </div>
 
-      {/* Right Panel */}
+      {/* ── Right Panel ── */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-slate-50">
         <div className="w-full max-w-md animate-fadeInUp">
           <div className="card p-8">
-            {/* Header */}
+
+            {/* Mobile logo */}
+            <div className="flex lg:hidden items-center justify-center gap-2 mb-6">
+              <img src={logo} alt="JobNova" className="h-9 w-auto object-contain" />
+              <span className="text-xl font-bold text-slate-800"
+                style={{ fontFamily: "Sora, sans-serif" }}>
+                Job<span className="text-blue-600">Nova</span>
+              </span>
+            </div>
+
             <div className="text-center mb-8">
               <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-3xl mx-auto mb-4">
                 🔍
               </div>
-              <h1 className="text-2xl font-bold text-slate-800 mb-1" style={{ fontFamily: "Sora, sans-serif" }}>
+              <h1 className="text-2xl font-bold text-slate-800 mb-1"
+                style={{ fontFamily: "Sora, sans-serif" }}>
                 Job Seeker Login
               </h1>
               <p className="text-sm text-slate-500">
@@ -112,9 +120,11 @@ export default function SeekerLogin() {
                       <polyline points="22,6 12,13 2,6"/>
                     </svg>
                   </span>
-                  <input type="email" required value={form.email}
+                  <input
+                    type="email" required value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="input-field pl-10" placeholder="you@example.com"
+                    className="input-field pl-10"
+                    placeholder="you@example.com"
                   />
                 </div>
               </div>
@@ -134,7 +144,8 @@ export default function SeekerLogin() {
                     type={showPass ? "text" : "password"} required
                     value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
-                    className="input-field pl-10 pr-10" placeholder="••••••••"
+                    className="input-field pl-10 pr-10"
+                    placeholder="••••••••"
                   />
                   <button type="button" onClick={() => setShowPass(!showPass)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -146,7 +157,8 @@ export default function SeekerLogin() {
                 </div>
               </div>
 
-              <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-3 text-base">
+              <button type="submit" disabled={loading}
+                className="btn-primary w-full justify-center py-3 text-base">
                 {loading ? (
                   <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>

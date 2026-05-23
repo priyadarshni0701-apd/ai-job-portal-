@@ -2,26 +2,37 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import logo from "../assets/logo.png";
 
 export default function Register() {
-  const { register } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ full_name: "", email: "", role: "seeker", password: "", password2: "" });
-  const [loading, setLoading] = useState(false);
+  const { register }            = useAuth();
+  const navigate                = useNavigate();
+  const [form, setForm]         = useState({
+    full_name: "", email: "", role: "seeker", password: "", password2: "",
+  });
+  const [loading, setLoading]   = useState(false);
   const [showPass, setShowPass] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.password2) { toast.error("Passwords do not match"); return; }
+    if (form.password !== form.password2) {
+      toast.error("Passwords do not match");
+      return;
+    }
     setLoading(true);
     try {
       await register(form);
-      toast.success("Account created! Welcome to JobNova🎉");
+      toast.success("Account created! Welcome to JobNova 🎉");
       navigate("/dashboard");
     } catch (err) {
       const errors = err.response?.data;
-      if (errors) Object.values(errors).forEach((m) => toast.error(Array.isArray(m) ? m[0] : m));
-      else toast.error("Registration failed");
+      if (errors) {
+        Object.values(errors).forEach((m) =>
+          toast.error(Array.isArray(m) ? m[0] : m)
+        );
+      } else {
+        toast.error("Registration failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -29,45 +40,77 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-500 via-orange-400 to-pink-500 text-white flex-col justify-between p-12 relative overflow-hidden">
+
+      {/* ── Left Panel ── */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-500 to-orange-700 text-white flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-blue-400 blur-3xl" />
         </div>
-        <Link to="/" className="flex items-center gap-2 relative z-10">
-  <img
-    src="/logo.png"
-    alt="JobNova"
-    className="h-9 w-auto object-contain"
-    onError={(e) => { e.target.style.display = "none"; }}
-  />
-  <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
-    Job<span className="text-orange-200">Nova</span>
-  </span>
-</Link>
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 relative z-10">
+          <img src={logo} alt="JobNova" className="h-10 w-auto object-contain" />
+          <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
+            Job<span className="text-orange-200">Nova</span>
+          </span>
+        </Link>
+
         <div className="relative z-10">
-          <h2 className="text-4xl font-extrabold mb-4 leading-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
+          <h2 className="text-4xl font-extrabold mb-4 leading-tight"
+            style={{ fontFamily: "Sora, sans-serif" }}>
             Start Your<br />Journey 🚀
           </h2>
           <p className="text-orange-100 text-lg mb-8">
-            Join thousands of professionals growing careers with JobNova
+            Join millions of professionals finding jobs with AI.
           </p>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { v: "50K+", l: "Active Jobs" },
+              { v: "2M+",  l: "Job Seekers" },
+              { v: "80K+", l: "Companies" },
+              { v: "95%",  l: "Match Rate" },
+            ].map((s, i) => (
+              <div key={i} className="bg-white/15 border border-white/20 rounded-xl p-4 text-center">
+                <div className="text-2xl font-extrabold"
+                  style={{ fontFamily: "Sora, sans-serif" }}>
+                  {s.v}
+                </div>
+                <div className="text-orange-200 text-xs mt-1">{s.l}</div>
+              </div>
+            ))}
+          </div>
         </div>
-        <p className="text-orange-300 text-sm relative z-10">© 2026 JobNova. All rights reserved.</p>
+
+        <p className="text-orange-300 text-sm relative z-10">
+          © {new Date().getFullYear()} JobNova. All rights reserved.
+        </p>
       </div>
 
-      {/* Right Panel */}
+      {/* ── Right Panel ── */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-slate-50 overflow-y-auto">
         <div className="w-full max-w-md py-8 animate-fadeInUp">
           <div className="card p-8">
+
+            {/* Mobile logo */}
+            <div className="flex lg:hidden items-center justify-center gap-2 mb-6">
+              <img src={logo} alt="JobNova" className="h-9 w-auto object-contain" />
+              <span className="text-xl font-bold text-slate-800"
+                style={{ fontFamily: "Sora, sans-serif" }}>
+                Job<span className="text-blue-600">Nova</span>
+              </span>
+            </div>
+
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-slate-800 mb-1" style={{ fontFamily: 'Sora, sans-serif' }}>
+              <h1 className="text-2xl font-bold text-slate-800 mb-1"
+                style={{ fontFamily: "Sora, sans-serif" }}>
                 Create your account
               </h1>
               <p className="text-sm text-slate-500">
                 Already have an account?{" "}
-                <Link to="/login" className="text-blue-600 font-medium hover:underline">Sign in →</Link>
+                <Link to="/login" className="text-blue-600 font-medium hover:underline">
+                  Sign in →
+                </Link>
               </p>
             </div>
 
@@ -75,8 +118,7 @@ export default function Register() {
             <div className="flex rounded-xl bg-slate-100 p-1 mb-6">
               {["seeker", "recruiter"].map((r) => (
                 <button
-                  key={r}
-                  type="button"
+                  key={r} type="button"
                   onClick={() => setForm({ ...form, role: r })}
                   className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
                     form.role === r
@@ -91,7 +133,9 @@ export default function Register() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
+                <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
+                  Full Name
+                </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -107,7 +151,9 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
+                <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
+                  Email Address
+                </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -123,7 +169,9 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
+                  Password
+                </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -131,7 +179,8 @@ export default function Register() {
                       <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                   </span>
-                  <input type={showPass ? "text" : "password"} required value={form.password}
+                  <input
+                    type={showPass ? "text" : "password"} required value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                     className="input-field pl-10 pr-10" placeholder="Min 8 characters"
                   />
@@ -146,7 +195,9 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+                <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
+                  Confirm Password
+                </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -161,7 +212,8 @@ export default function Register() {
                 </div>
               </div>
 
-              <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-3 text-base mt-2">
+              <button type="submit" disabled={loading}
+                className="btn-primary w-full justify-center py-3 text-base mt-2">
                 {loading ? (
                   <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
