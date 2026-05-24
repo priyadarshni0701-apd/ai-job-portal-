@@ -65,7 +65,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fadeInUp">
 
-           
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6" style={{ fontfamily: "Sora, sans-serif"}}>
+              Job<span className="text-orange-300">Nova</span>
+            </h1>
 
             <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
