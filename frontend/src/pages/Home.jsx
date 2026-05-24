@@ -65,20 +65,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fadeInUp">
 
-            {/* Logo in hero */}
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <img
-                src="/logo.png"
-                alt="JobNova"
-                className="h-14 w-auto object-contain"
-              />
-              <span
-                className="text-4xl font-extrabold text-white"
-                style={{ fontFamily: "Sora, sans-serif" }}
-              >
-                Job<span className="text-orange-400">Nova</span>
-              </span>
-            </div>
+           
 
             <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
