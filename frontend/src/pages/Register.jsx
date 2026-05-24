@@ -42,33 +42,54 @@ export default function Register() {
     <div className="min-h-screen flex">
 
       {/* ── Left Panel ── */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-orange-500 to-orange-700 text-white flex-col justify-between p-12 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 text-white flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-white blur-3xl" />
-          <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-blue-400 blur-3xl" />
+          <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-cyan-400 blur-3xl" />
         </div>
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 relative z-10">
           <img src={logo} alt="JobNova" className="h-10 w-auto object-contain" />
           <span className="text-2xl font-bold" style={{ fontFamily: "Sora, sans-serif" }}>
-            Job<span className="text-orange-200">Nova</span>
+            Job<span className="text-orange-300">Nova</span>
           </span>
         </Link>
 
+        {/* Center Content */}
         <div className="relative z-10">
-          <h2 className="text-4xl font-extrabold mb-4 leading-tight"
-            style={{ fontFamily: "Sora, sans-serif" }}>
+          <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-sm mb-6">
+            🚀 Join JobNova Today
+          </div>
+          <h2
+            className="text-4xl font-extrabold mb-4 leading-tight"
+            style={{ fontFamily: "Sora, sans-serif" }}
+          >
             Start Your<br />Journey 🚀
           </h2>
-          <p className="text-orange-100 text-lg mb-8">
-            Join millions of professionals finding jobs with AI.
+          <p className="text-blue-200 text-lg mb-8">
+            Join millions of professionals finding jobs with AI-powered matching.
           </p>
-          
+
+          {/* Feature list */}
+          <div className="space-y-4">
+            {[
+              { icon: "🤖", text: "AI matches your resume with the best jobs" },
+              { icon: "📄", text: "Upload resume — skills extracted instantly" },
+              { icon: "📊", text: "See match percentage for every job" },
+              { icon: "🎯", text: "Track all applications in one dashboard" },
+            ].map((f, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-lg shrink-0">
+                  {f.icon}
+                </div>
+                <span className="text-blue-100 text-sm">{f.text}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <p className="text-orange-300 text-sm relative z-10">
+        <p className="text-blue-300 text-sm relative z-10">
           © {new Date().getFullYear()} JobNova. All rights reserved.
         </p>
       </div>
@@ -78,18 +99,22 @@ export default function Register() {
         <div className="w-full max-w-md py-8 animate-fadeInUp">
           <div className="card p-8">
 
-            {/* Mobile logo */}
+            {/* Mobile logo — only visible on small screens */}
             <div className="flex lg:hidden items-center justify-center gap-2 mb-6">
               <img src={logo} alt="JobNova" className="h-9 w-auto object-contain" />
-              <span className="text-xl font-bold text-slate-800"
-                style={{ fontFamily: "Sora, sans-serif" }}>
+              <span
+                className="text-xl font-bold text-slate-800"
+                style={{ fontFamily: "Sora, sans-serif" }}
+              >
                 Job<span className="text-blue-600">Nova</span>
               </span>
             </div>
 
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-slate-800 mb-1"
-                style={{ fontFamily: "Sora, sans-serif" }}>
+              <h1
+                className="text-2xl font-bold text-slate-800 mb-1"
+                style={{ fontFamily: "Sora, sans-serif" }}
+              >
                 Create your account
               </h1>
               <p className="text-sm text-slate-500">
@@ -104,9 +129,10 @@ export default function Register() {
             <div className="flex rounded-xl bg-slate-100 p-1 mb-6">
               {["seeker", "recruiter"].map((r) => (
                 <button
-                  key={r} type="button"
+                  key={r}
+                  type="button"
                   onClick={() => setForm({ ...form, role: r })}
-                  className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                     form.role === r
                       ? "bg-white text-blue-600 shadow-sm"
                       : "text-slate-500 hover:text-slate-700"
@@ -118,6 +144,8 @@ export default function Register() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+
+              {/* Full Name */}
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
                   Full Name
@@ -129,13 +157,18 @@ export default function Register() {
                       <circle cx="12" cy="7" r="4"/>
                     </svg>
                   </span>
-                  <input type="text" required value={form.full_name}
+                  <input
+                    type="text"
+                    required
+                    value={form.full_name}
                     onChange={(e) => setForm({ ...form, full_name: e.target.value })}
-                    className="input-field pl-10" placeholder="John Doe"
+                    className="input-field pl-10"
+                    placeholder="John Doe"
                   />
                 </div>
               </div>
 
+              {/* Email */}
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
                   Email Address
@@ -147,13 +180,18 @@ export default function Register() {
                       <polyline points="22,6 12,13 2,6"/>
                     </svg>
                   </span>
-                  <input type="email" required value={form.email}
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="input-field pl-10" placeholder="you@example.com"
+                    className="input-field pl-10"
+                    placeholder="you@example.com"
                   />
                 </div>
               </div>
 
+              {/* Password */}
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
                   Password
@@ -166,20 +204,35 @@ export default function Register() {
                     </svg>
                   </span>
                   <input
-                    type={showPass ? "text" : "password"} required value={form.password}
+                    type={showPass ? "text" : "password"}
+                    required
+                    value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
-                    className="input-field pl-10 pr-10" placeholder="Min 8 characters"
+                    className="input-field pl-10 pr-10"
+                    placeholder="Min 8 characters"
                   />
-                  <button type="button" onClick={() => setShowPass(!showPass)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                    {showPass
-                      ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    }
+                  <button
+                    type="button"
+                    onClick={() => setShowPass(!showPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  >
+                    {showPass ? (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                      </svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                    )}
                   </button>
                 </div>
               </div>
 
+              {/* Confirm Password */}
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
                   Confirm Password
@@ -191,19 +244,29 @@ export default function Register() {
                       <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                   </span>
-                  <input type="password" required value={form.password2}
+                  <input
+                    type="password"
+                    required
+                    value={form.password2}
                     onChange={(e) => setForm({ ...form, password2: e.target.value })}
-                    className="input-field pl-10" placeholder="••••••••"
+                    className="input-field pl-10"
+                    placeholder="••••••••"
                   />
                 </div>
               </div>
 
-              <button type="submit" disabled={loading}
-                className="btn-primary w-full justify-center py-3 text-base mt-2">
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full justify-center py-3 text-base mt-2"
+              >
                 {loading ? (
                   <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                    <circle className="opacity-25" cx="12" cy="12" r="10"
+                      stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                   </svg>
                 ) : (
                   <>
@@ -218,6 +281,15 @@ export default function Register() {
                 )}
               </button>
             </form>
+
+            {/* Bottom links */}
+            <div className="mt-5 text-center text-sm text-slate-400">
+              Are you a recruiter?{" "}
+              <Link to="/login/recruiter" className="text-orange-500 font-semibold hover:underline">
+                Recruiter Login →
+              </Link>
+            </div>
+
           </div>
         </div>
       </div>
