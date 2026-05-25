@@ -9,8 +9,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("access");
-    if (token) fetchProfile();
-    else setLoading(false);
+    if (token) {
+      fetchProfile();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const fetchProfile = async () => {
@@ -18,13 +21,20 @@ export const AuthProvider = ({ children }) => {
       const { data } = await api.get("/auth/profile/");
       setUser(data);
     } catch {
-      localStorage.clear();
+      // Token invalid — clear everything
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
   const loginSeeker = async (email, password) => {
+    // Clear any old tokens first
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+
     const { data } = await api.post("/auth/login/seeker/", { email, password });
     localStorage.setItem("access",  data.tokens.access);
     localStorage.setItem("refresh", data.tokens.refresh);
@@ -33,6 +43,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginRecruiter = async (email, password) => {
+    // Clear any old tokens first
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+
     const { data } = await api.post("/auth/login/recruiter/", { email, password });
     localStorage.setItem("access",  data.tokens.access);
     localStorage.setItem("refresh", data.tokens.refresh);
@@ -41,6 +55,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (payload) => {
+    // Clear any old tokens first
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+
     const { data } = await api.post("/auth/register/", payload);
     localStorage.setItem("access",  data.tokens.access);
     localStorage.setItem("refresh", data.tokens.refresh);
@@ -50,17 +68,31 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout/", {
-        refresh: localStorage.getItem("refresh"),
-      });
-    } catch {}
-    localStorage.clear();
-    setUser(null);
+      const refresh = localStorage.getItem("refresh");
+      if (refresh) {
+        await api.post("/auth/logout/", { refresh });
+      }
+    } catch {
+      // Ignore logout errors
+    } finally {
+      // Always clear local storage
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      setUser(null);
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, loginSeeker, loginRecruiter, register, logout, fetchProfile }}
+      value={{
+        user,
+        loading,
+        loginSeeker,
+        loginRecruiter,
+        register,
+        logout,
+        fetchProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>
